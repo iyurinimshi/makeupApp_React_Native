@@ -1,20 +1,23 @@
 import React from 'react';
-import { 
-    View, 
-    Text, 
-    StyleSheet, 
-    ImageBackground, 
-    TouchableOpacity, 
-    ScrollView, 
-    SafeAreaView, 
+import {
+    View,
+    Text,
+    StyleSheet,
+    ImageBackground,
+    TouchableOpacity,
+    ScrollView,
+    SafeAreaView,
     Platform,
-    Image, 
+    Image,
     FlatList,
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, NavigationProp, CompositeNavigationProp } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack'; 
+import { StackNavigationProp } from '@react-navigation/stack'; // 🔑 ඔබගේ රූප මාර්ගය අනුව නිවැරදි කරන්න
+
+
+
 
 // ----------------------------------------------------
 // 1. TYPES සහ CONSTANTS
@@ -37,8 +40,8 @@ type TabParamList = {
 
 // Homescreen navigation සඳහා Composite Type එක
 type HomescreenNavigationProp = CompositeNavigationProp<
-    StackNavigationProp<RootStackParamList, 'Main'>, 
-    NavigationProp<TabParamList, 'HomeTab'> 
+    StackNavigationProp<RootStackParamList, 'Main'>,
+    NavigationProp<TabParamList, 'HomeTab'>
 >;
 
 
@@ -47,29 +50,29 @@ type HomescreenNavigationProp = CompositeNavigationProp<
  */
 const QUICK_ACTIONS = [
     { id: '1', name: 'View Products', icon: 'cube-outline', targetScreen: 'ProductsTab' },
-    { id: '2', name: 'Add New', icon: 'plus-circle-outline', targetScreen: 'ProductsTab' }, 
-        { id: '3', name: 'Write Note', icon: 'notebook-outline', targetScreen: 'NotesTab' },
+    { id: '2', name: 'Add New', icon: 'plus-circle-outline', targetScreen: 'ProductsTab' },
+    { id: '3', name: 'Write Note', icon: 'notebook-outline', targetScreen: 'NotesTab' },
 ];
 
 /**
  * Home Screen එකේ ප්‍රධාන Dashboard Components හසුරුවයි.
  */
 const Homescreen = () => {
-    const navigation = useNavigation<HomescreenNavigationProp>(); 
-    
-    // 🔑 රූප මාර්ගය ඔබගේ ව්‍යුහය අනුව නිවැරදි කර ඇත: '../image/img1.jpg' 
-    const backgroundImage = require('../image/img1.jpg'); 
-    const userProfileImage = require('../image/img2.jpg'); // User Profile Image (Placeholder)
+    const navigation = useNavigation<HomescreenNavigationProp>();
+
+    // Image paths are relative to the current file
+    const backgroundImage = require('./image/img1.jpg');
+    const userProfileImage = require('./image/img2.jpg'); // User Profile Image (Placeholder)
 
     // Quick Action button එකක් එබූ විට ක්‍රියාත්මක වන function එක
     const handleQuickAction = (targetScreen: string) => {
-        navigation.navigate(targetScreen as keyof TabParamList); 
+        navigation.navigate(targetScreen as keyof TabParamList);
     };
-    
+
     // 🔑 Placeholder Expiration Data
     const daysUntilExpire = 7;
     const expiredCount = 2;
-    
+
     // Logout function
     const handleLogout = async () => {
         try {
@@ -77,7 +80,7 @@ const Homescreen = () => {
             // Root Stack (Stack.Navigator) හි Welcome Screen වෙත යොමු කිරීම
             navigation.reset({
                 index: 0,
-                routes: [{ name: 'Welcome' as any }], 
+                routes: [{ name: 'Welcome' as any }],
             });
         } catch (error) {
             console.error('Logout error:', error);
@@ -88,60 +91,60 @@ const Homescreen = () => {
         <SafeAreaView style={styles.safeArea}>
             <ImageBackground source={backgroundImage} style={styles.background}>
                 <ScrollView contentContainerStyle={styles.scrollContent}>
-                    
+
                     {/* ----------------- Header Section (User & Logout) ----------------- */}
                     <View style={styles.header}>
                         <View style={styles.profileContainer}>
-                             {/* 🔑 Image Source එක නිවැරදි කර ඇත */}
-                             <Image source={userProfileImage} style={styles.profileImage} /> 
-                             <View>
+                            {/* 🔑 Image Source එක නිවැරදි කර ඇත */}
+                            <Image source={userProfileImage} style={styles.profileImage} />
+                            <View>
                                 <Text style={styles.greetingText}>Hi,</Text>
                                 <Text style={styles.userName}>Makeup Lover!</Text>
-                             </View>
+                            </View>
                         </View>
-                        
+
                         {/* Logout Button */}
-                        <TouchableOpacity 
-                            onPress={handleLogout} 
+                        <TouchableOpacity
+                            onPress={handleLogout}
                             style={styles.logoutButton}
                         >
                             <MaterialCommunityIcons name="logout" size={24} color="#FFF" />
                         </TouchableOpacity>
                     </View>
-                    
+
                     {/* ----------------- Expiration Tracker Card ----------------- */}
                     <View style={[styles.card, styles.expirationCard]}>
                         <MaterialCommunityIcons name="calendar-alert" size={30} color="#E04E4E" />
                         <Text style={styles.cardTitle}>Product Expiration Watch</Text>
-                        
+
                         <View style={styles.alertRow}>
                             <Text style={styles.alertValue}>{daysUntilExpire}</Text>
                             <Text style={styles.alertLabel}>Days left until the next product expires.</Text>
                         </View>
-                        
+
                         <View style={styles.alertRow}>
                             <Text style={[styles.alertValue, { color: '#E04E4E' }]}>{expiredCount}</Text>
                             <Text style={styles.alertLabel}>Total products expired!</Text>
                         </View>
-                        
-                        <TouchableOpacity 
+
+                        <TouchableOpacity
                             style={styles.viewButton}
                             onPress={() => handleQuickAction('ProductsTab')}
                         >
                             <Text style={styles.viewButtonText}>View Expiration Details</Text>
                         </TouchableOpacity>
                     </View>
-                    
+
                     {/* ----------------- Quick Actions ----------------- */}
                     <Text style={styles.sectionTitle}>Quick Actions</Text>
-                    
+
                     <FlatList
                         data={QUICK_ACTIONS}
                         horizontal
                         showsHorizontalScrollIndicator={false}
                         keyExtractor={(item) => item.id}
                         renderItem={({ item }) => (
-                            <TouchableOpacity 
+                            <TouchableOpacity
                                 style={styles.quickActionButton}
                                 onPress={() => handleQuickAction(item.targetScreen as keyof TabParamList)}
                             >
@@ -159,7 +162,7 @@ const Homescreen = () => {
                         <Text style={styles.cardText}>
                             මෙහිදී ඔබගේ මෑතම සටහන් (Notes) කිහිපයක් පෙන්වනු ඇත. ඔබගේ අත්දැකීම් ලියා තබන්න.
                         </Text>
-                        <TouchableOpacity 
+                        <TouchableOpacity
                             style={[styles.viewButton, { backgroundColor: '#5C6BC0' }]}
                             onPress={() => handleQuickAction('NotesTab')}
                         >
@@ -195,7 +198,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingVertical: 15,
-        marginTop: Platform.OS === 'android' ? 20 : 0, 
+        marginTop: Platform.OS === 'android' ? 20 : 0,
     },
     profileContainer: {
         flexDirection: 'row',

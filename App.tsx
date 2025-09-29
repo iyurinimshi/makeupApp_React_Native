@@ -105,12 +105,7 @@ const App: React.FC = () => {
         // User Token එක පරීක්ෂා කර Initial Route එක තීරණය කිරීම
         const checkLoginStatus = async () => {
             try {
-                const userToken = await AsyncStorage.getItem('userToken');
-                if (userToken) {
-                    setInitialRoute('Main');
-                } else {
-                    setInitialRoute('Welcome');
-                }
+                
             } catch (e) {
                 console.error('Failed to read userToken from AsyncStorage', e);
             } finally {
@@ -145,6 +140,7 @@ const App: React.FC = () => {
                 <Stack.Screen name="Register" component={RegisterScreen as React.ComponentType<any>} />
                 {/* 🔑 Main App Flow (Tabs) */}
                 <Stack.Screen name="Main" component={MainTabs as React.ComponentType<any>} />
+                <Stack.Screen name="Homescreen" component={Homescreen as React.ComponentType<any>} />
             </Stack.Navigator>
         </NavigationContainer>
     );

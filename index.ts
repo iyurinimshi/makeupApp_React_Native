@@ -1,7 +1,8 @@
 import { registerRootComponent } from 'expo';
 
-// 🔑 App.tsx වෙනුවට HomeScreen.tsx ගොනුව Import කරන්න
-import App from './Homescreen'; 
+
+// Import the main App component which contains the NavigationContainer
+import App from './App';
 
 // registerRootComponent calls AppRegistry.registerComponent('main', () => App);
 // It also ensures that whether you load the app in Expo Go or in a native build,

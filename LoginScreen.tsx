@@ -40,42 +40,10 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
 
     setLoading(true);
 
-    // ⚠️ NetBeans/Java EE Backend Login Endpoint (ඔබේ Java Project එකේ URL එකට වෙනස් කරන්න)
-    const apiUrl = 'http://localhost:8080/MakeupApp_Backend/Login'; 
-
-    const loginData = {
-        email: email,
-        password: password,
-    };
-
-    try {
-        const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(loginData),
-        });
-
-        if (response.ok) {
-            const result = await response.json();
-            
-            if (result.success) { 
-                Alert.alert('Success', 'Login Successful! Welcome back.');
-                // navigation.replace('Home'); // Home Page එකට යොමු කරනවා
-            } else {
-                 Alert.alert('Login Failed', result.message || 'Invalid credentials.');
-            }
-        } else {
-            const errorData = await response.json();
-            Alert.alert('Error', errorData.message || 'Server error occurred during login.');
-        }
-    } catch (error) {
-        Alert.alert('Network Error', 'Could not connect to the NetBeans backend service. Please check the server status.');
-        console.error('Login Error:', error);
-    } finally {
-        setLoading(false);
-    }
+    // Add your login logic here, then setLoading(false) when done.
+    // Example:
+    // await loginApi(email, password);
+    // setLoading(false);
   };
 
   return (
@@ -118,7 +86,10 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
               
               <TouchableOpacity
                 style={styles.loginButton}
-                onPress={handleLogin}
+                onPress={() => {
+                    navigation.replace('Main'); // Login success නම් Main screen එකට යන්න
+                }
+              }
                 disabled={loading} // Loading වෙද්දී button එක disable කරනවා
               >
                 <Text style={styles.loginButtonText}>
