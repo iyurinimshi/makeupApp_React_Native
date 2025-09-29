@@ -61,8 +61,8 @@ const Homescreen = () => {
     const navigation = useNavigation<HomescreenNavigationProp>();
 
     // Image paths are relative to the current file
-    const backgroundImage = require('./image/img1.jpg');
-    const userProfileImage = require('./image/img2.jpg'); // User Profile Image (Placeholder)
+    const backgroundImage = require('./image/img6.jpg');
+    const userProfileImage = require('./image/img6.jpg'); // User Profile Image (Placeholder)
 
     // Quick Action button එකක් එබූ විට ක්‍රියාත්මක වන function එක
     const handleQuickAction = (targetScreen: string) => {
