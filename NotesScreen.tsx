@@ -10,9 +10,12 @@ const NotesScreen = () => {
                     මෙහිදී ඔබට නව සටහන් (New Notes) එක් කිරීමට සහ දැනට පවතින සමාලෝචන (Reviews) කළමනාකරණය කිරීමට පුළුවනි.
                 </Text>
             </View>
+      
         </SafeAreaView>
     );
 };
+
+
 
 const styles = StyleSheet.create({
     safeArea: {
