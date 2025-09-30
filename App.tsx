@@ -16,6 +16,7 @@ import RegisterScreen from './RegisterScreen';
 import Homescreen from './Homescreen'; 
 import ProductsScreen from './ProductsScreen'; 
 import NotesScreen from './NotesScreen'; 
+import CalendarScreen from './CalendarScreen'; // 🌟 Calendar Screen එක import කර ඇත
 
 // ----------------------------------------------------
 // 2. NAVIGATORS
@@ -36,6 +37,7 @@ type TabParamList = {
     HomeTab: undefined;
     ProductsTab: undefined;
     NotesTab: undefined;
+    CalendarTab: undefined; // 🌟 Calendar Tab එක Types වලට එකතු කර ඇත
 };
 
 /**
@@ -48,7 +50,7 @@ const MainTabs: React.FC = () => {
             screenOptions={{
                 tabBarActiveTintColor: '#D78593', // Theme Pink/Red
                 tabBarInactiveTintColor: '#999',
-                headerShown: false, // Tab screens වල header එක Stack එකෙන් පාලනය වේ
+                headerShown: false, 
                 tabBarStyle: {
                     paddingBottom: 5,
                     height: 60,
@@ -89,6 +91,17 @@ const MainTabs: React.FC = () => {
                     ),
                 }}
             />
+             {/* 🌟 නව Calendar Tab එක මෙතනට එකතු කර ඇත */}
+            <Tab.Screen 
+                name="CalendarTab" // 🔑 නිවැරදි නම CalendarTab
+                component={CalendarScreen} 
+                options={{
+                    title: 'Calendar',
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="calendar-month-outline" color={color} size={size} />
+                    ),
+                }}
+            />
         </Tab.Navigator>
     );
 };
@@ -105,7 +118,11 @@ const App: React.FC = () => {
         // User Token එක පරීක්ෂා කර Initial Route එක තීරණය කිරීම
         const checkLoginStatus = async () => {
             try {
-                
+                 // 💡 මෙතනදී userToken එකක් තිබේදැයි පරීක්ෂා කර initialRoute එක 'Main' ලෙස වෙනස් කළ හැකිය.
+                 const userToken = await AsyncStorage.getItem('@user_token');
+                 if (userToken) {
+                    setInitialRoute('Main');
+                 }
             } catch (e) {
                 console.error('Failed to read userToken from AsyncStorage', e);
             } finally {
@@ -130,7 +147,7 @@ const App: React.FC = () => {
             <Stack.Navigator
                 initialRouteName={initialRoute}
                 screenOptions={{
-                    headerShown: false, // ගෝලීය වශයෙන් headers සඟවයි.
+                    headerShown: false, 
                     cardStyle: { backgroundColor: '#F5F5F5' }
                 }}
             >
@@ -141,6 +158,7 @@ const App: React.FC = () => {
                 {/* 🔑 Main App Flow (Tabs) */}
                 <Stack.Screen name="Main" component={MainTabs as React.ComponentType<any>} />
                 <Stack.Screen name="Homescreen" component={Homescreen as React.ComponentType<any>} />
+                 {/* CalendarTab වෙනම Stack Screen එකක් ලෙස අවශ්‍ය නැත. එය Main Tabs තුළ ඇත */}
             </Stack.Navigator>
         </NavigationContainer>
     );
