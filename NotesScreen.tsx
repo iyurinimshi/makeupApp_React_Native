@@ -114,10 +114,8 @@ const NotesScreen = () => {
                                 onChangeText={setNoteTitle}
                             />
                             
-                            {/* ➖ Separator / Divider */}
                             <View style={styles.separator} />
 
-                            {/* 📝 Note Content Input (multiline) */}
                             <TextInput
                                 style={styles.contentInput}
                                 placeholder="ඔබේ අදහස් මෙතන සටහන් කරන්න..."
